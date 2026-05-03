@@ -27,6 +27,7 @@ func (l *LinkedList) Prepend(value int) bool {
 	if l.len == 0 {
 		l.head = newNode
 		l.tail = newNode
+		l.len = 1
 		return true
 	}
 	newNode.next = l.head
@@ -37,9 +38,10 @@ func (l *LinkedList) Prepend(value int) bool {
 
 func (l *LinkedList) Append(value int) bool {
 	newNode := &Node{value: value}
-	if l.head == nil {
+	if l.len == 0 {
 		l.head = newNode
 		l.tail = newNode
+		l.len = 1
 		return true
 	}
 	l.tail.next = newNode
@@ -73,7 +75,7 @@ func (l *LinkedList) PopLast() bool {
 
 func (l *LinkedList) Get(index int) *Node {
 	if l.len < index || index < 0 {
-		return &Node{value: -1}
+		return nil
 	}
 	temp := l.head
 	for i := 0; i < index; i++ {
@@ -88,7 +90,6 @@ func (l *LinkedList) Set(index int, value int) bool {
 		return false
 	}
 	temp.value = value
-	l.len++
 	return true
 }
 
@@ -141,37 +142,5 @@ func (l *LinkedList) Print() {
 }
 
 func main() {
-	my_node := createLinkedList(10)
-
-	my_node.Prepend(40)
-	my_node.Append(50)
-	my_node.Append(100)
-	my_node.Append(200)
-
-	my_node.Print()
-	fmt.Println("--------")
-
-	my_node.PopLast()
-	my_node.Print()
-
-	//my_node.Prepend(30)
-	//my_node.Prepend(33)
-	//
-	//my_node.Append(100)
-	//
-	////	my_node.Pop()
-	////my_node.Print()
-	//my_node.PopFirst()
-	//my_node.Print()
-
-	//fmt.Println(my_node.Get(1))
-	//my_node.Set(1, 150)
-	//fmt.Println("--------")
-	//my_node.Print()
-	//fmt.Println("--------")
-	//my_node.Insert(1, 44)
-	//my_node.Print()
-	//fmt.Println("--------")
-	//my_node.Remove(1)
-	//my_node.Print()
+	//test here
 }
