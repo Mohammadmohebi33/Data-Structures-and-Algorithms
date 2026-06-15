@@ -122,7 +122,7 @@ func (l *LinkedList) Remove(index int) bool {
 	if index == 0 {
 		return l.PopFirst()
 	}
-	if index == l.len {
+	if index == l.len-1 {
 		return l.PopLast()
 	}
 	prev := l.Get(index - 1)
