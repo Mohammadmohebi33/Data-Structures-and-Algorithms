@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Node struct {
 	value int
 	left  *Node
@@ -13,59 +11,84 @@ type Tree struct {
 }
 
 func (t *Tree) Insert(value int) {
-	if t.root == nil {
-		t.root = &Node{value: value}
-		return
+
+	t.root = insertRecursive(t.root, value)
+}
+
+func insertRecursive(node *Node, value int) *Node {
+
+	if node == nil {
+		return &Node{value: value}
 	}
-	t.root.insert(value)
+
+	if value < node.value {
+		node.left = insertRecursive(node.left, value)
+	} else if value > node.value {
+		node.right = insertRecursive(node.right, value)
+	}
+
+	return node
 }
 
 func (t *Tree) Search(value int) bool {
-	if t.root == nil {
-		return false
-	}
-	return t.root.search(value)
+	return searchRecursive(t.root, value)
 }
 
-func (n *Node) insert(value int) {
-	if value < n.value {
-		if n.left == nil {
-			n.left = &Node{value: value}
-		} else {
-			n.left.insert(value)
-		}
-	} else {
-		if n.right == nil {
-			n.right = &Node{value: value}
-		} else {
-			n.right.insert(value)
-		}
-	}
-}
+func searchRecursive(node *Node, value int) bool {
 
-func (n *Node) search(value int) bool {
-	if n == nil {
+	if node == nil {
 		return false
 	}
-	if value == n.value {
+
+	if value == node.value {
 		return true
 	}
-	if value < n.value {
-		return n.left.search(value)
+
+	if value < node.value {
+		return searchRecursive(node.left, value)
 	}
-	return n.right.search(value)
+
+	return searchRecursive(node.right, value)
+}
+
+func (t *Tree) Delete(value int) {
+	t.root = deleteRecursive(t.root, value)
+}
+
+func deleteRecursive(node *Node, value int) *Node {
+	if node == nil {
+		return nil
+	}
+
+	if value < node.value {
+		node.left = deleteRecursive(node.left, value)
+	} else if value > node.value {
+		node.right = deleteRecursive(node.right, value)
+	} else {
+
+		if node.left == nil {
+			return node.right
+		}
+
+		if node.right == nil {
+			return node.left
+		}
+
+		minNode := minValueNode(node.right)
+		node.value = minNode.value
+		node.right = deleteRecursive(node.right, minNode.value)
+	}
+
+	return node
+}
+
+func minValueNode(node *Node) *Node {
+	for node.left != nil {
+		node = node.left
+	}
+	return node
 }
 
 func main() {
-	myTree := &Tree{}
 
-	myTree.Insert(1)
-	myTree.Insert(2)
-	myTree.Insert(3)
-
-	if myTree.Search(5) {
-		fmt.Println("3 is exist")
-	} else {
-		fmt.Println("5 is not exist")
-	}
 }
